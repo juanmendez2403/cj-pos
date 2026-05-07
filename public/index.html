@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJ Hamburguesas - Punto de Venta</title>
+    <meta name="description" content="Sistema de Punto de Venta para CJ Hamburguesas">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- ==========================================
+         SIDEBAR DE NAVEGACIÓN
+         ========================================== -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">CJ</div>
+            <span class="logo-text">Hamburguesas</span>
+        </div>
+        <nav class="sidebar-nav">
+            <button class="nav-btn active" data-view="pos" id="nav-pos">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                <span>Punto de Venta</span>
+            </button>
+            <button class="nav-btn" data-view="gestion" id="nav-gestion">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Productos</span>
+            </button>
+            <button class="nav-btn" data-view="inventario" id="nav-inventario">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                <span>Inventario</span>
+            </button>
+            <button class="nav-btn" data-view="reportes" id="nav-reportes">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Reportes</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="clock" id="sidebar-clock">00:00</div>
+            <div class="date" id="sidebar-date">--</div>
+        </div>
+    </aside>
+
+    <!-- ==========================================
+         CONTENIDO PRINCIPAL
+         ========================================== -->
+    <main id="main-content" class="main-content">
+        
+        <!-- ======== VISTA POS ======== -->
+        <section id="pos-view" class="view active-view">
+            <div class="pos-layout">
+                <!-- Panel de Productos -->
+                <div class="products-panel">
+                    <div class="products-header">
+                        <h1>Punto de Venta</h1>
+                        <div class="search-box" id="search-box">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="search-input" placeholder="Buscar producto..." autocomplete="off">
+                        </div>
+                    </div>
+                    <!-- Filtros de Categoría -->
+                    <div class="category-filters" id="category-filters">
+                        <button class="cat-btn active" data-category="todos">🍔 Todos</button>
+                        <button class="cat-btn" data-category="hamburguesas">🍔 Hamburguesas</button>
+                        <button class="cat-btn" data-category="complementos">🍟 Complementos</button>
+                        <button class="cat-btn" data-category="bebidas">🥤 Bebidas</button>
+                        <button class="cat-btn" data-category="combos">⭐ Combos</button>
+                    </div>
+                    <!-- Grid de Productos -->
+                    <div class="products-grid" id="products-grid">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Panel del Carrito -->
+                <div class="cart-panel" id="cart-panel">
+                    <div class="cart-header">
+                        <h2>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            Orden Actual
+                        </h2>
+                        <button class="btn-clear-cart" id="btn-clear-cart" title="Vaciar carrito">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                    </div>
+                    <div class="cart-items" id="cart-items">
+                        <div class="cart-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                            <p>Agrega productos</p>
+                        </div>
+                    </div>
+                    <div class="cart-totals" id="cart-totals">
+                        <div class="total-row">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal">$0.00</span>
+                        </div>
+                        <div class="total-row total-final">
+                            <span>Total</span>
+                            <span id="cart-total">$0.00</span>
+                        </div>
+                    </div>
+                    <button class="btn-cobrar" id="btn-cobrar" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                        Cobrar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======== VISTA GESTIÓN DE PRODUCTOS ======== -->
+        <section id="gestion-view" class="view">
+            <div class="view-header">
+                <h1>Gestión de Productos</h1>
+                <div class="header-actions">
+                    <button class="btn-add-product" id="btn-new-product">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Nuevo Producto
+                    </button>
+                </div>
+            </div>
+            <div class="gestion-grid" id="gestion-grid">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </section>
+
+        <!-- ======== VISTA INVENTARIO ======== -->
+        <section id="inventario-view" class="view">
+            <div class="view-header">
+                <h1>Gestión de Inventario</h1>
+                <div class="header-actions">
+                    <div class="stock-alert-badge" id="stock-alert-badge" style="display:none">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span id="alert-count">0</span> alertas
+                    </div>
+                </div>
+            </div>
+            <div class="inventario-grid" id="inventario-grid">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </section>
+
+        <!-- ======== VISTA REPORTES ======== -->
+        <section id="reportes-view" class="view">
+            <div class="view-header">
+                <h1>Reporte del Día</h1>
+                <div class="header-actions">
+                    <input type="date" id="report-date" class="date-input">
+                </div>
+            </div>
+            <div class="reportes-content" id="reportes-content">
+                <!-- Tarjetas de resumen -->
+                <div class="stats-grid" id="stats-grid"></div>
+                <!-- Desglose por método de pago -->
+                <div class="report-section" id="payment-breakdown"></div>
+                <!-- Productos más vendidos -->
+                <div class="report-section" id="top-products"></div>
+                <!-- Historial de ventas -->
+                <div class="report-section" id="sales-history"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==========================================
+         MODAL DE PAGO
+         ========================================== -->
+    <div class="modal-overlay" id="payment-modal">
+        <div class="modal payment-modal-content">
+            <div class="modal-header">
+                <h2>Procesar Pago</h2>
+                <button class="modal-close" id="modal-close-payment">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-total">
+                    <span>Total a Cobrar</span>
+                    <span class="payment-amount" id="payment-amount">$0.00</span>
+                </div>
+                <div class="payment-methods">
+                    <label class="payment-method-option">
+                        <input type="radio" name="metodo_pago" value="efectivo" checked>
+                        <div class="method-card">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span>Efectivo</span>
+                        </div>
+                    </label>
+                    <label class="payment-method-option">
+                        <input type="radio" name="metodo_pago" value="tarjeta">
+                        <div class="method-card">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                            <span>Tarjeta</span>
+                        </div>
+                    </label>
+                    <label class="payment-method-option">
+                        <input type="radio" name="metodo_pago" value="transferencia">
+                        <div class="method-card">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+                            <span>Transferencia</span>
+                        </div>
+                    </label>
+                </div>
+                <div class="cash-input-section" id="cash-section">
+                    <label>Monto Recibido</label>
+                    <input type="number" id="monto-recibido" class="cash-input" placeholder="0.00" min="0" step="0.01">
+                    <div class="quick-cash" id="quick-cash"></div>
+                    <div class="change-display" id="change-display">
+                        <span>Cambio:</span>
+                        <span id="cambio-amount">$0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-payment">Cancelar</button>
+                <button class="btn-confirm-payment" id="btn-confirm-payment" disabled>
+                    Confirmar Venta
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE TICKET
+         ========================================== -->
+    <div class="modal-overlay" id="ticket-modal">
+        <div class="modal ticket-modal-content">
+            <div class="modal-header">
+                <h2>✅ Venta Completada</h2>
+                <button class="modal-close" id="modal-close-ticket">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="ticket-preview" id="ticket-preview"></div>
+            </div>
+            <div class="modal-footer ticket-actions">
+                <button class="btn-ticket-action" id="btn-download-pdf">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Descargar PDF
+                </button>
+                <button class="btn-ticket-action btn-whatsapp" id="btn-whatsapp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Enviar por WhatsApp
+                </button>
+                <button class="btn-ticket-action btn-new-sale" id="btn-new-sale">Nueva Venta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE REABASTECER
+         ========================================== -->
+    <div class="modal-overlay" id="restock-modal">
+        <div class="modal restock-modal-content">
+            <div class="modal-header">
+                <h2>Reabastecer Insumo</h2>
+                <button class="modal-close" id="modal-close-restock">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="restock-insumo-name" class="restock-name"></p>
+                <label>Cantidad a agregar:</label>
+                <input type="number" id="restock-cantidad" class="cash-input" placeholder="0" min="1" step="1">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-restock">Cancelar</button>
+                <button class="btn-confirm-payment" id="btn-confirm-restock">Reabastecer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE PRODUCTO (Crear/Editar)
+         ========================================== -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal product-modal-content">
+            <div class="modal-header">
+                <h2 id="product-modal-title">Nuevo Producto</h2>
+                <button class="modal-close" id="modal-close-product">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="prod-nombre" class="form-input" placeholder="Ej: Hamburguesa Triple" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="prod-descripcion" class="form-input form-textarea" placeholder="Ej: Pan, triple carne, queso..." rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio de Venta ($)</label>
+                        <input type="number" id="prod-precio" class="form-input" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="prod-categoria" class="form-input">
+                            <option value="hamburguesas">🍔 Hamburguesas</option>
+                            <option value="complementos">🍟 Complementos</option>
+                            <option value="bebidas">🥤 Bebidas</option>
+                            <option value="postres">🍩 Postres</option>
+                            <option value="combos">⭐ Combos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btn-cancel-product">Cancelar</button>
+                <button class="btn-confirm-payment" id="btn-save-product">Guardar Producto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE RECETA / INGREDIENTES
+         ========================================== -->
+    <div class="modal-overlay" id="recipe-modal">
+        <div class="modal recipe-modal-content">
+            <div class="modal-header">
+                <h2>🧾 Ingredientes</h2>
+                <button class="modal-close" id="modal-close-recipe">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recipe-product-label">
+                    Receta de: <strong id="recipe-product-name"></strong>
+                </div>
+                <!-- Lista de ingredientes actuales -->
+                <div class="recipe-items-list" id="recipe-items">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <!-- Agregar nuevo ingrediente -->
+                <div class="recipe-add-section">
+                    <h4>Agregar Ingrediente</h4>
+                    <div class="recipe-add-form">
+                        <select id="recipe-insumo-select" class="form-input recipe-select">
+                            <option value="">Seleccionar insumo...</option>
+                        </select>
+                        <input type="number" id="recipe-cantidad-input" class="form-input recipe-qty-input" placeholder="Cantidad" min="0.001" step="0.001">
+                        <button class="btn-add-ingredient" id="btn-add-recipe-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-confirm-payment" id="btn-close-recipe">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE CONFIRMACIÓN PERSONALIZADO
+         ========================================== -->
+    <div class="modal-overlay" id="confirm-modal">
+        <div class="modal confirm-modal-content">
+            <div class="modal-header">
+                <h2>⚠️ Confirmar</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message" class="confirm-text"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="confirm-no">Cancelar</button>
+                <button class="btn-confirm-payment btn-danger" id="confirm-yes">Sí, confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE PROMPT PERSONALIZADO
+         ========================================== -->
+    <div class="modal-overlay" id="prompt-modal">
+        <div class="modal prompt-modal-content">
+            <div class="modal-header">
+                <h2>✏️ Editar</h2>
+            </div>
+            <div class="modal-body">
+                <p id="prompt-message" class="confirm-text"></p>
+                <input type="number" id="prompt-input" class="form-input" step="0.001" min="0">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="prompt-cancel">Cancelar</button>
+                <button class="btn-confirm-payment" id="prompt-ok">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/app.js"></script>
+    <script src="/js/pos.js"></script>
+    <script src="/js/gestion.js"></script>
+    <script src="/js/inventario.js"></script>
+    <script src="/js/reportes.js"></script>
+    <script src="/js/ticket.js"></script>
+</body>
+</html>
+
