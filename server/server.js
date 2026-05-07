@@ -27,6 +27,7 @@ app.use('/api/productos', require('./routes/productos'));
 app.use('/api/insumos', require('./routes/insumos'));
 app.use('/api/ventas', require('./routes/ventas'));
 app.use('/api/reportes', require('./routes/reportes'));
+app.use('/api/setup', require('./routes/setup'));
 
 // ==========================================
 // RUTA CATCH-ALL (SPA)
